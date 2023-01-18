@@ -1,0 +1,42 @@
+* {
+    font-family: monospace;
+}
+
+
+body {
+    background-color: lavender;
+}
+
+header {
+    width: 75%;
+    height: 10%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: skyblue; 
+    text-align: center;
+}
+
+img {
+    width: 80%;
+}
+
+h1 {
+    margin: 0%;
+}
+
+select, #review, input, button {
+ border: 0;
+ background-color: white;
+ border-radius: 5px;
+ box-shadow: 0 0 2px #7d7d7d;;
+}
+
+@media (max-width: 500px) {
+  #reviews {
+    display: none; 
+  }
+}
+/* 
+h3, p {
+    text-align: center;
+} */
