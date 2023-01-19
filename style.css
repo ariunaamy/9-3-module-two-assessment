@@ -8,12 +8,17 @@ body {
 }
 
 header {
-    width: 75%;
+   
     height: 10%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     background-color: skyblue; 
     text-align: center;
+}
+
+header, main, section {
+    width: 75%;
+    margin: auto;
 }
 
 img {
