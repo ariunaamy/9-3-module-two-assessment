@@ -41,7 +41,7 @@ select, #review, input, button {
     display: none; 
   }
 }
-/* 
-h3, p {
-    text-align: center;
-} */
+
+ol {
+    display: none;
+}

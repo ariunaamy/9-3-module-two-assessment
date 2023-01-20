@@ -1,3 +1,4 @@
+// all veriables used 
 const baseURL = "https://resource-ghibli-api.onrender.com";
 const selectTitles = document.getElementById("titles");
 const displayInfo = document.getElementById("display-info");
@@ -11,27 +12,33 @@ const ul = document.querySelector("ul");
 const resetButton = document.getElementById("reset-reviews")
 
 const ol = document.querySelector("ol");
+const showPeopleButton = document.getElementById("show-people");
+let count = 0;
 
+//API call for films 
 function run() {
     fetch(`${baseURL}/films`)
-	.then(response => response.json())
-	.then(result => {
-        const people = 
+        .then(response => response.json())
+        .then(result => {
         createFilmOptions(result);
         movieDetails(result);
-        addReview(result);
+            addReview();
     })
-        .catch(err => console.error(err));
-
-        fetch(`${baseURL}/people`)
-        .then(response => response.json())
-        .then(data => {
-            showPeople(data);
-        })
         .catch(err => console.error(err));
 }
 
 
+showPeopleButton.addEventListener("click", (event) => {
+    count++;
+    event.preventDefault();
+    //API call for people
+    fetch(`${baseURL}/people`)
+        .then(response => response.json())
+        .then(data => {
+        showPeople(data, count);
+    })
+        .catch(err => console.error(err));
+})
 
 setTimeout(run, 1000);
 
@@ -41,16 +48,18 @@ function createFilmOptions(result) {
     const option = document.createElement("option");
     selectTitles.append(option);
 
-    option.innerHTML=result[i].title;
-    option.setAttribute("value", result[i].id);
-
+        option.textContent = result[i].title;
+        option.setAttribute("value", result[i].id);
     }
 }
 
-function movieDetails(result){
-    let count = 0;
+function movieDetails(result) {
     selectTitles.addEventListener("change", (event) => {
-        count++;
+        ol.innerHTML = "";
+        document.getElementById("show-people").disabled = false;
+
+        event.preventDefault();
+
         displayInfo.append(title);
         displayInfo.append(releaseYear);
         displayInfo.append(description);
@@ -60,20 +69,13 @@ function movieDetails(result){
             if (selectTitles.value === result[i].id) {
                 title.innerHTML = result[i].title;
                 releaseYear.innerHTML = result[i].release_date;
-         // releaseYear.setAttribute("value", result[i].release_date);
              description.innerHTML = result[i].description;
             }
         }
-
-        if (count > 1) {
-            ol.innerHTML = "";
-            document.getElementById("show-people").disabled = false;
-    }
     })
-
 }
 
-function addReview(result) {
+function addReview() {
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -96,32 +98,15 @@ function addReview(result) {
 }
 
 function showPeople(data) {
-    let count = 0;
-    document.getElementById("show-people").addEventListener("click", () => {
-        count++
-        if (count > 1) {
-             document.getElementById("show-people").disabled = true;
+    ol.innerHTML = "";
+    for (let i = 0; i < data.length; i++) {
+        let filmID = data[i].films[0].slice(7);
+        if (selectTitles.value === filmID) {
+            const li = document.createElement("li");
+            ol.append(li);
+            li.innerHTML = data[i].name;
         }
-        else {
-            for (let i = 0; i < data.length; i++) {
-                let filmID = data[i].films[0].slice(7);
-                if (selectTitles.value === filmID) {
-                    const li = document.createElement("li");
-                    ol.append(li);
-                    li.innerHTML = data[i].name;
-                }
-            }
-
-        }
-    })
+    }
 }
-
-
-// if (ol.length>0){
-//    
-//     }  
-
-
-
 
 
